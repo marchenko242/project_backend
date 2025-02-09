@@ -1,0 +1,13 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.userRouterConnect = void 0;
+const express_1 = require("express");
+const token_process_1 = require("../middlewares/token.process");
+const user_controller_process_1 = require("../controllers/user.controller-process");
+const router = (0, express_1.Router)();
+router.delete('/deleteMe', token_process_1.tokenMiddleware.checkAccessToken, user_controller_process_1.userController.deleteMe);
+router.patch('/updatedMe', token_process_1.tokenMiddleware.checkAccessToken, user_controller_process_1.userController.updatedMe);
+router.get("/getList", token_process_1.tokenMiddleware.checkAccessToken, user_controller_process_1.userController.getList);
+router.get("/getUser", token_process_1.tokenMiddleware.checkAccessToken, user_controller_process_1.userController.getUser);
+router.get('/filterByName', user_controller_process_1.userController.filterByName);
+exports.userRouterConnect = router;

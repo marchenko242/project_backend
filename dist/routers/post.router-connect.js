@@ -1,0 +1,12 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.postRouterConnect = void 0;
+const express_1 = require("express");
+const token_process_1 = require("../middlewares/token.process");
+const post_controller_process_1 = require("../controllers/post.controller-process");
+const router = (0, express_1.Router)();
+router.get('/userPosts/:userId', post_controller_process_1.postController.getUserPosts);
+router.post('/create', token_process_1.tokenMiddleware.checkAccessToken, post_controller_process_1.postController.create);
+router.delete('/delete/:postId', token_process_1.tokenMiddleware.checkAccessToken, post_controller_process_1.postController.delete);
+router.patch('/updated/:postId', token_process_1.tokenMiddleware.checkAccessToken, post_controller_process_1.postController.updated);
+exports.postRouterConnect = router;
