@@ -6,11 +6,11 @@ import {CustomError} from "../error/custom-error";
 class TokenServiceProcess {
     public generateToken (payload: ITokenPayload): ITokenPair {
         try {
-            const accessToken = jwt.sign(payload, configModel.jwtAccessSecret, {
-                expiresIn: "15m"
+            const accessToken = jwt.sign(payload, configModel.KEYACCES, {
+                expiresIn: "25m"
             });
-            const refreshToken = jwt.sign(payload, configModel.jwtRefreshSecret, {
-                expiresIn: "7d"
+            const refreshToken = jwt.sign(payload, configModel.KEYREFRESH, {
+                expiresIn: "14d"
             })
 
             return {
@@ -27,18 +27,18 @@ class TokenServiceProcess {
 
             switch (type) {
                 case "access":
-                    secret = configModel.jwtAccessSecret;
+                    secret = configModel.KEYACCES;
                     break;
                 case "refresh":
-                    secret = configModel.jwtRefreshSecret;
+                    secret = configModel.KEYREFRESH;
                     break;
                 default:
-                    throw new CustomError("Invalid token type", 401);
+                    throw new CustomError("Wrong token", 401);
             }
 
             return jwt.verify(token, secret) as ITokenPayload;
         } catch (e) {
-            throw new CustomError("Invalid token", 401);
+            throw new CustomError("Wrong token", 401);
         }
     }
 }

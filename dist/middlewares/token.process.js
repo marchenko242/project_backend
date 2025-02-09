@@ -9,16 +9,16 @@ class TokenProcess {
         try {
             const header = req.headers.authorization;
             if (!header) {
-                throw new custom_error_1.CustomError("No token provided", 401);
+                throw new custom_error_1.CustomError("untoken provided", 401);
             }
             const accessToken = header?.split("Bearer ")[1];
             if (!accessToken) {
-                throw new custom_error_1.CustomError("No token provided", 401);
+                throw new custom_error_1.CustomError("token unprovided", 401);
             }
             const tokenPayload = token_service_process_1.tokenService.verifyToken(accessToken, "access");
             const pair = await token_repos_process_1.tokenRepository.findByParams({ accessToken });
             if (!pair) {
-                throw new custom_error_1.CustomError("Token invalid", 401);
+                throw new custom_error_1.CustomError("Token wrong", 401);
             }
             res.locals.tokenPayload = tokenPayload;
             next();
@@ -31,16 +31,16 @@ class TokenProcess {
         try {
             const header = req.headers.authorization;
             if (!header) {
-                throw new custom_error_1.CustomError("No token provided", 401);
+                throw new custom_error_1.CustomError("untoken provided", 401);
             }
             const refreshToken = header?.split("Bearer ")[1];
             if (!refreshToken) {
-                throw new custom_error_1.CustomError("No token provided", 401);
+                throw new custom_error_1.CustomError("ontoken provided", 401);
             }
             const tokenPayload = token_service_process_1.tokenService.verifyToken(refreshToken, "refresh");
             const pair = await token_repos_process_1.tokenRepository.findByParams({ refreshToken });
             if (!pair) {
-                throw new custom_error_1.CustomError("Token invalid", 401);
+                throw new custom_error_1.CustomError("Token wrong", 401);
             }
             res.locals.tokenPayload = tokenPayload;
             res.locals.refreshToken = refreshToken;

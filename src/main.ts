@@ -34,7 +34,7 @@ process.on('uncaughtException', (error: Error) => {
     process.exit(1);
 })
 
-app.listen(configModel.port, async () => {
+app.listen(configModel.porthost, async () => {
     await mongoose.connect(configModel.mongoUri)
-    console.log(`Server has been started on port ${configModel.port}`)
+    console.log(`Server has been started on port ${configModel.porthost}`)
 })

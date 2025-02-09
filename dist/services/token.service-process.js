@@ -40,11 +40,11 @@ const custom_error_1 = require("../error/custom-error");
 class TokenServiceProcess {
     generateToken(payload) {
         try {
-            const accessToken = jwt.sign(payload, config_model_1.configModel.jwtAccessSecret, {
-                expiresIn: "15m"
+            const accessToken = jwt.sign(payload, config_model_1.configModel.KEYACCES, {
+                expiresIn: "25m"
             });
-            const refreshToken = jwt.sign(payload, config_model_1.configModel.jwtRefreshSecret, {
-                expiresIn: "7d"
+            const refreshToken = jwt.sign(payload, config_model_1.configModel.KEYREFRESH, {
+                expiresIn: "14d"
             });
             return {
                 accessToken,
@@ -60,18 +60,18 @@ class TokenServiceProcess {
             let secret;
             switch (type) {
                 case "access":
-                    secret = config_model_1.configModel.jwtAccessSecret;
+                    secret = config_model_1.configModel.KEYACCES;
                     break;
                 case "refresh":
-                    secret = config_model_1.configModel.jwtRefreshSecret;
+                    secret = config_model_1.configModel.KEYREFRESH;
                     break;
                 default:
-                    throw new custom_error_1.CustomError("Invalid token type", 401);
+                    throw new custom_error_1.CustomError("Wrong token", 401);
             }
             return jwt.verify(token, secret);
         }
         catch (e) {
-            throw new custom_error_1.CustomError("Invalid token", 401);
+            throw new custom_error_1.CustomError("Wrong token", 401);
         }
     }
 }

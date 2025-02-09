@@ -8,19 +8,19 @@ class TokenProcess {
         try{
             const header = req.headers.authorization
             if(!header) {
-                throw new CustomError("No token provided", 401)
+                throw new CustomError("untoken provided", 401)
             }
 
             const accessToken = header?.split("Bearer ")[1];
             if(!accessToken) {
-                throw new CustomError("No token provided", 401)
+                throw new CustomError("token unprovided", 401)
             }
 
             const tokenPayload = tokenService.verifyToken(accessToken, "access")
 
             const pair = await tokenRepository.findByParams({accessToken})
             if(!pair) {
-                throw new CustomError("Token invalid", 401)
+                throw new CustomError("Token wrong", 401)
             }
 
             res.locals.tokenPayload = tokenPayload
@@ -33,19 +33,19 @@ class TokenProcess {
         try{
             const header = req.headers.authorization
             if(!header) {
-                throw new CustomError("No token provided", 401)
+                throw new CustomError("untoken provided", 401)
             }
 
             const refreshToken = header?.split("Bearer ")[1];
             if(!refreshToken) {
-                throw new CustomError("No token provided", 401)
+                throw new CustomError("ontoken provided", 401)
             }
 
             const tokenPayload = tokenService.verifyToken(refreshToken, "refresh")
 
             const pair = await tokenRepository.findByParams({refreshToken})
             if(!pair) {
-                throw new CustomError("Token invalid", 401)
+                throw new CustomError("Token wrong", 401)
             }
 
             res.locals.tokenPayload = tokenPayload
