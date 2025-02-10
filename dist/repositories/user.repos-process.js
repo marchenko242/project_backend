@@ -2,9 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.userRepository = void 0;
 const user_model_1 = require("../models/user.model");
-class UserReposProcess {
+class UserRepository {
     async getByEmail(email) {
-        return await user_model_1.User.findOne({ email }).select("-password");
+        return await user_model_1.User.findOne({ email });
     }
     async create(dto) {
         return await user_model_1.User.create(dto);
@@ -25,4 +25,4 @@ class UserReposProcess {
         return await user_model_1.User.find({ name: new RegExp(name, "i") }).select("-password");
     }
 }
-exports.userRepository = new UserReposProcess();
+exports.userRepository = new UserRepository();

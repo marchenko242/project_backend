@@ -23,7 +23,7 @@ app.get('/', (req, res) => {
 });
 app.use('*', (error, req, res, next) => {
     const status = error.status ?? 500;
-    const message = error.message ?? "Something went wrong";
+    const message = error.message ?? "Something went error";
     res.status(status).json({ status, message });
 });
 process.on('uncaughtException', (error) => {
@@ -32,5 +32,5 @@ process.on('uncaughtException', (error) => {
 });
 app.listen(config_model_1.configModel.porthost, async () => {
     await mongoose_1.default.connect(config_model_1.configModel.mongoUri);
-    console.log(`Server has been started on port ${config_model_1.configModel.porthost}`);
+    console.log(`Started on port ${config_model_1.configModel.porthost}`);
 });

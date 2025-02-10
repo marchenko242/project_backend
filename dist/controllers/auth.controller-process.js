@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.authController = void 0;
 const auth_service_process_1 = require("../services/auth.service-process");
-class AuthControllerProcess {
+class AuthController {
     async create(req, res, next) {
         try {
             const userDto = req.body;
@@ -38,11 +38,11 @@ class AuthControllerProcess {
         try {
             const refreshToken = res.locals.refreshToken;
             await auth_service_process_1.authService.logout(refreshToken);
-            res.status(204);
+            res.sendStatus(204);
         }
         catch (e) {
             next(e);
         }
     }
 }
-exports.authController = new AuthControllerProcess();
+exports.authController = new AuthController();

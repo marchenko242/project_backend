@@ -1,9 +1,10 @@
-import {CustomError} from "../error/custom-error";
+import mongoose from "mongoose";
 import {userRepository} from "../repositories/user.repos-process";
+import {CustomError} from "../error/custom-error";
 import {ITokenPayload} from "../interfaces/token.model";
 import {IGetUserDto, IUser, IUserResponseDto, IUserUpdatedDto} from "../interfaces/user.model";
 
-class UserServiceProcess {
+class UserService {
     public async isEmailUnique(email: string): Promise<void> {
         const user = await userRepository.getByEmail(email)
         if(user) {
@@ -34,11 +35,20 @@ class UserServiceProcess {
         const {id, email} = dto
         let result: IUserResponseDto
         if (id) {
+            if (!mongoose.Types.ObjectId.isValid(id)) {
+                throw new CustomError("Invalid ID format", 400);
+            }
             result = await userRepository.getById(id)
         } else {
             result =  await userRepository.getByEmail(email)
         }
-        return result
+        return {
+            _id: result._id,
+            name: result.name,
+            email: result.email,
+            createdAt: result.createdAt,
+            updatedAt: result.updatedAt
+        }
     }
 
     public async filterByName (name: string): Promise<IUserResponseDto[]> {
@@ -46,4 +56,4 @@ class UserServiceProcess {
     }
 }
 
-export const userService = new UserServiceProcess();
+export const userService = new UserService();

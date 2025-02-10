@@ -1,14 +1,14 @@
 import {IUser, IUserCreateDto, IUserLoginDto, IUserResponseDto} from "../interfaces/user.model";
-import {userService} from "./user.service-process";
-import {passwordService} from "./password.service-process";
-import {userRepository} from "../repositories/user.repos-process";
 import {ITokenPair, ITokenPayload} from "../interfaces/token.model";
-import {CustomError} from "../error/custom-error";
+import {passwordService} from "./password.service-process";
+import {userService} from "./user.service-process";
+import {userRepository} from "../repositories/user.repos-process";
 import {tokenService} from "./token.service-process";
 import {tokenRepository} from "../repositories/token.repos-process";
+import {CustomError} from "../error/custom-error";
 
 
-class AuthServiceProcess {
+class AuthService {
     public async create (userDto: IUserCreateDto): Promise<{user: IUserResponseDto, tokens: ITokenPair}> {
         await userService.isEmailUnique(userDto.email)
         const password = await passwordService.hashPassword(userDto.password)
@@ -24,6 +24,9 @@ class AuthServiceProcess {
 
     public async login (userDto: IUserLoginDto): Promise<{user: IUserResponseDto, tokens: ITokenPair}> {
         const user = await userRepository.getByEmail(userDto.email)
+        if (!user || !user.password) {
+            throw new CustomError("User not found or password missing", 400);
+        }
         const isPasswordCorrect = await passwordService.comparePassword(
             userDto.password,
             user.password
@@ -51,4 +54,4 @@ class AuthServiceProcess {
     }
 }
 
-export const authService = new AuthServiceProcess();
+export const authService = new AuthService();

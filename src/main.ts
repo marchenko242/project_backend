@@ -25,7 +25,7 @@ app.get('/', (req: Request, res: Response) => {
 
 app.use('*', (error: CustomError, req: Request, res: Response, next: NextFunction) => {
     const status = error.status ?? 500
-    const message = error.message ?? "Something went wrong"
+    const message = error.message ?? "Something went error"
 
     res.status(status).json({status, message})
 })
@@ -36,5 +36,5 @@ process.on('uncaughtException', (error: Error) => {
 
 app.listen(configModel.porthost, async () => {
     await mongoose.connect(configModel.mongoUri)
-    console.log(`Server has been started on port ${configModel.porthost}`)
+    console.log(`Started on port ${configModel.porthost}`)
 })

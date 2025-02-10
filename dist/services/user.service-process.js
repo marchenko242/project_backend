@@ -1,9 +1,13 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.userService = void 0;
-const custom_error_1 = require("../error/custom-error");
+const mongoose_1 = __importDefault(require("mongoose"));
 const user_repos_process_1 = require("../repositories/user.repos-process");
-class UserServiceProcess {
+const custom_error_1 = require("../error/custom-error");
+class UserService {
     async isEmailUnique(email) {
         const user = await user_repos_process_1.userRepository.getByEmail(email);
         if (user) {
@@ -31,15 +35,24 @@ class UserServiceProcess {
         const { id, email } = dto;
         let result;
         if (id) {
+            if (!mongoose_1.default.Types.ObjectId.isValid(id)) {
+                throw new custom_error_1.CustomError("Invalid ID format", 400);
+            }
             result = await user_repos_process_1.userRepository.getById(id);
         }
         else {
             result = await user_repos_process_1.userRepository.getByEmail(email);
         }
-        return result;
+        return {
+            _id: result._id,
+            name: result.name,
+            email: result.email,
+            createdAt: result.createdAt,
+            updatedAt: result.updatedAt
+        };
     }
     async filterByName(name) {
         return await user_repos_process_1.userRepository.filterByName(name);
     }
 }
-exports.userService = new UserServiceProcess();
+exports.userService = new UserService();

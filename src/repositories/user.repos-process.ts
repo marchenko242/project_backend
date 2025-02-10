@@ -1,10 +1,10 @@
-import {IUser, IUserCreateDto, IUserResponseDto, IUserUpdatedDto} from "../interfaces/user.model";
 import {User} from "../models/user.model";
+import {IUser, IUserCreateDto, IUserResponseDto, IUserUpdatedDto} from "../interfaces/user.model";
 
 
-class UserReposProcess {
+class UserRepository {
     public async getByEmail (email: string): Promise<IUser> {
-        return await User.findOne({ email }).select("-password")
+        return await User.findOne({ email })
     }
 
     public async create(dto: IUserCreateDto): Promise<IUser> {
@@ -33,4 +33,4 @@ class UserReposProcess {
 
 }
 
-export const userRepository = new UserReposProcess();
+export const userRepository = new UserRepository();

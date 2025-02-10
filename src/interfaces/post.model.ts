@@ -9,4 +9,9 @@ export interface IPost {
 
 export interface IPostCreateBody extends Pick<IPost, "title" | "body"> {}
 
+export interface IPostUpdateBody {
+    title?: string,
+    body?: string
+}
+
 export interface IPostCreateDto extends Pick<IPost, "title" | "body" | "_userId"> {}
